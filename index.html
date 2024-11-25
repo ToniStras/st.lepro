@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collège Saint Lepro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="center">
+        <h1 class="title">Collège Saint Lepro</h1>
+        <button id="btn-inscription" class="animated-btn">Inscription</button>
+    </div>
+
+    <!-- Formulaire d'inscription -->
+    <div class="form-container" id="form-inscription">
+        <form id="registration-form">
+            <h2>Inscription</h2>
+            <label for="prenom">Prénom:</label>
+            <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required>
+
+            <label for="nom">Nom:</label>
+            <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+
+            <label for="age">Âge:</label>
+            <input type="number" id="age" name="age" placeholder="Votre âge" required>
+
+            <label for="birthdate">Date de naissance:</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+
+            <label for="discord">Pseudo Discord:</label>
+            <input type="text" id="discord" name="discord" placeholder="Ex: Nom#1234" required>
+
+            <button type="submit">Envoyer</button>
+            <button type="button" id="close-form">Fermer</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>Créateurs du site : <strong>agent_toni</strong></p>
+    </footer>
+
+    <script>
+        // Afficher et fermer le formulaire
+        const btnInscription = document.getElementById('btn-inscription');
+        const formContainer = document.getElementById('form-inscription');
+        const closeForm = document.getElementById('close-form');
+
+        btnInscription.addEventListener('click', () => {
+            formContainer.style.display = 'flex';
+        });
+
+        closeForm.addEventListener('click', () => {
+            formContainer.style.display = 'none';
+        });
+
+        // Envoi des données via le webhook Discord avec un embed amélioré
+        document.getElementById('registration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const prenom = document.getElementById('prenom').value;
+            const nom = document.getElementById('nom').value;
+            const age = document.getElementById('age').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const discord = document.getElementById('discord').value;
+
+            await fetch("https://discord.com/api/webhooks/1310696524094640168/c9YEs8RO5aCDkNSIbs49467m_NIFRO3z9meJuVz-S0LhqxRK3c3_bjcJzTd6PvtHoZUL", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    embeds: [
+                        {
+                            title: "🎓 **Nouvelle Inscription** 🎓",
+                            color: 3447003,
+                            description: `👤 **Prénom:** ${prenom}  
+                            👤 **Nom:** ${nom}  
+                            🎂 **Âge:** ${age}  
+                            📅 **Date de naissance:** ${birthdate}  
+                            🎮 **Pseudo Discord:** ${discord}  
+                            `,
+                            timestamp: new Date().toISOString(),
+                            footer: { text: "Collège Saint Lepro ✨" }
+                        }
+                    ]
+                })
+            });
+
+            alert('Inscription envoyée avec succès !');
+            formContainer.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
